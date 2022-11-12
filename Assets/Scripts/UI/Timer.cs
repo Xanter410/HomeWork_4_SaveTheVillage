@@ -13,6 +13,8 @@ public class Timer : MonoBehaviour
     [SerializeField] private bool IsLoop = false;
     [SerializeField] private TextMeshProUGUI _timeText;
     [SerializeField] private Image _timerSprite;
+    [SerializeField] GameManager _gameManager;
+    [SerializeField] TextMeshProUGUI _CycleCountText;
     [SerializeField] public UnityEvent onTimeOver;
 
     private void Start()
@@ -33,6 +35,11 @@ public class Timer : MonoBehaviour
             {
                 onTimeOver.Invoke();
 
+                if (_CycleCountText != null)
+                {
+                    UpdateCycleText();
+                }
+
                 if (IsLoop)
                 {
                     _currentTime = _maxTime;
@@ -44,11 +51,16 @@ public class Timer : MonoBehaviour
             }
         }
     }
+    public void UpdateCycleText()
+    {
+        _CycleCountText.text = $"Цикл: {_gameManager.CycleCount}";
+    }
 
-    public void StartTimer()
+    public void RestartTimer()
     {
         IsRunning = true;
         _currentTime = _maxTime;
+        UpdateCycleText();
     }
 
     private void DisplayTime(float timeToDisplay)
